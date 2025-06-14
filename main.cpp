@@ -1,42 +1,37 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <chrono>
+#include <fstream>
+#include <random>
+#include <algorithm>
+#include <filesystem>
 #include "utils.h"
 
 int main() {
-    // Define array sizes to test
-    std::vector<int> sizes = {1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000};
-    
-    // Arrays to store results
-    std::vector<double> insertionTimes(sizes.size());
-    std::vector<double> quickTimes(sizes.size());
-    std::vector<double> mergeTimes(sizes.size());
-    std::vector<long long> insertionOps(sizes.size());
-    std::vector<long long> quickOps(sizes.size());
-    std::vector<long long> mergeOps(sizes.size());
+    // Create data directory if it doesn't exist
+    std::filesystem::create_directory("data");
 
     // Test cases
-    std::vector<std::string> testCases = {"random", "ascending", "descending", "small"};
-
-    for (const auto& testCase : testCases) {
-        std::cout << "\nRunning tests for " << testCase << " arrays...\n";
-        
-        // Run tests for current case
-        runSortingTests(testCase, sizes,
-                       insertionTimes, quickTimes, mergeTimes,
-                       insertionOps, quickOps, mergeOps);
-
-        // Save results to CSV
-        std::string filename = testCase + "_results.csv";
-        saveResultsToCSV(filename, sizes,
-                        insertionTimes, quickTimes, mergeTimes,
-                        insertionOps, quickOps, mergeOps);
-        
-        std::cout << "Results saved to " << filename << "\n";
-    }
-
-    std::cout << "\nAll tests completed. Results have been saved to CSV files.\n";
-    std::cout << "You can now use these CSV files to generate graphs and analyze the results.\n";
-
+    std::vector<int> sizes = {1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000};
+    
+    // Random arrays
+    std::cout << "Testing random arrays...\n";
+    testSortingAlgorithms(sizes, generateRandomArray, "data/random_results.csv");
+    
+    // Ascending arrays
+    std::cout << "Testing ascending arrays...\n";
+    testSortingAlgorithms(sizes, generateAscendingArray, "data/ascending_results.csv");
+    
+    // Descending arrays
+    std::cout << "Testing descending arrays...\n";
+    testSortingAlgorithms(sizes, generateDescendingArray, "data/descending_results.csv");
+    
+    // Small arrays
+    std::cout << "Testing small arrays...\n";
+    std::vector<int> smallSizes = {10, 20, 30, 40, 50};
+    testSortingAlgorithms(smallSizes, generateRandomArray, "data/small_results.csv");
+    
+    std::cout << "Testing completed. Results saved to CSV files in the data directory.\n";
     return 0;
 } 

@@ -6,6 +6,7 @@
 #include <fstream>
 #include <string>
 #include "sorting_algorithms.h"
+#include <functional>
 
 // Generate random array
 std::vector<int> generateRandomArray(int size);
@@ -38,5 +39,10 @@ void runSortingTests(const std::string& arrayType,
                     std::vector<long long>& insertionOps,
                     std::vector<long long>& quickOps,
                     std::vector<long long>& mergeOps);
+
+// Function to test sorting algorithms
+void testSortingAlgorithms(const std::vector<int>& sizes,
+                          std::function<std::vector<int>(int)> arrayGenerator,
+                          const std::string& outputFile);
 
 #endif // UTILS_H 
